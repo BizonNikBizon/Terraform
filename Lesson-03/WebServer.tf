@@ -6,52 +6,52 @@
 #Made Bizon Nik
 #-------------------------------------------------------------------
 provider "aws" {
- region = "eu-central-1" 
+  region = "eu-central-1"
 }
 
 resource "aws_default_vpc" "default" {
-  
+
 }
 
 resource "aws_instance" "my_webserver" {
-    ami = "ami-0b2ac948e23c57071"    # Amazon Linux AMI
-  instance_type = "t2.micro"
-vpc_security_group_ids = [aws_security_group.my_WebServer.id]
-user_data           = file("user_data.sh")
+  ami                    = "ami-0b2ac948e23c57071" # Amazon Linux AMI
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.my_WebServer.id]
+  user_data              = file("user_data.sh")
 
-tags           = {
-Name = "Web Server Buil by Terraform"
-Owner = "Bizon Nik!"
-}
+  tags = {
+    Name  = "Web Server Buil by Terraform"
+    Owner = "Bizon Nik!"
+  }
 }
 resource "aws_security_group" "my_WebServer" {
   name        = "Web_Server Security group"
   description = "Web_Server Securitygroup"
-vpc_id = aws_default_vpc.default.id
+  vpc_id      = aws_default_vpc.default.id
 
   ingress {
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-   }
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-ingress {
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-      }
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
- tags = {
-Name = "Web Server Buil by Terraform"
-Owner = "Bizon Nik"
-}
+  tags = {
+    Name  = "Web Server Buil by Terraform"
+    Owner = "Bizon Nik"
+  }
 }

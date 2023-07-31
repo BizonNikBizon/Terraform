@@ -6,39 +6,39 @@
 #Made Bizon Nik
 #-------------------------------------------------------------------
 provider "aws" {
- region = "eu-central-1" 
+  region = "eu-central-1"
 }
 
-resource "aws_default_vpc" "default" { 
+resource "aws_default_vpc" "default" {
 }
 
 resource "aws_eip" "my_static_IP" {
   instance = aws_instance.my_webserver.id
-  vpc = true
+  vpc      = true
   tags = {
-    Name = "Web Server IP"
+    Name  = "Web Server IP"
     Owner = "Bizon Nik"
   }
 }
 
 resource "aws_instance" "my_webserver" {
-    ami = "ami-0b2ac948e23c57071"    # Amazon Linux AMI
-  instance_type = "t2.micro"
-vpc_security_group_ids = [aws_security_group.my_WebServer.id]
-user_data           = templatefile("user_data.sh.tpl", {
-  f_name = "Nik",
-  l_name = "Bizon",
-  names = ["Vasya", "Kolya", "Petya", "John", "Donald", "Masha", "Test", "post", "boooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooom"]
-})
-user_data_replace_on_change = true
+  ami                    = "ami-0b2ac948e23c57071" # Amazon Linux AMI
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.my_WebServer.id]
+  user_data = templatefile("user_data.sh.tpl", {
+    f_name = "Nik",
+    l_name = "Bizon",
+    names  = ["Vasya", "Kolya", "Petya", "John", "Donald", "Masha", "Test", "post", "boooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooom"]
+  })
+  user_data_replace_on_change = true
 
-tags           = {
-Name = "Web Server Buil by Terraform"
-Owner = "Bizon Nik!"
-}
-lifecycle {
-  create_before_destroy = true
-}
+  tags = {
+    Name  = "Web Server Buil by Terraform"
+    Owner = "Bizon Nik!"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
 
 
 }
@@ -46,31 +46,31 @@ lifecycle {
 resource "aws_security_group" "my_WebServer" {
   name        = "Web_Server Security group"
   description = "Web_Server Securitygroup"
-vpc_id = aws_default_vpc.default.id
+  vpc_id      = aws_default_vpc.default.id
 
   ingress {
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-   }
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-ingress {
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-      }
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
- tags = {
-Name = "Web Server Buil by Terraform"
-Owner = "Bizon Nik"
-}
+  tags = {
+    Name  = "Web Server Buil by Terraform"
+    Owner = "Bizon Nik"
+  }
 }
